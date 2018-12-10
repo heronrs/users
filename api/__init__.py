@@ -1,7 +1,7 @@
 from logging.config import dictConfig
 
 from flask import Flask, jsonify, cli
-
+from flask_mongoengine import MongoEngine
 
 from .utils import LOGGING, APIException
 from .views.user import view as user_view
@@ -25,5 +25,8 @@ def create_app():
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
+
+    db = MongoEngine()
+    db.init_app(app)
 
     return app
