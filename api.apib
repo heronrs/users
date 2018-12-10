@@ -1,0 +1,89 @@
+FORMAT: 1A
+HOST: https://miraedchallenge.com
+
+# Miraed Challenge API
+A Restful API made as parte of Mira Educacao Backend Challenge
+
+# Data Structures
+
+## User (object)
++ id: 1 (string, fixed) - Unique identifier
++ name: John Doe (string, required) - User name
++ emails: [johndoe@example.com, johndoe2@other.com] (array[string], required) - User emails
++ telephones: [5516996542233, 551133225566] (array[string], required) - User telephones
++ cpf: 3756458967 (string, required) - User CPF
++ birthdate: 10/24/2010 (string, required) - User birthdate
++ active: true (boolean)
+    + Default: true
++ address (Address, required)
+
+
+## Address (object)
++ city: Araraquara (string, fixed) - Address city
++ state_province: São Paulo (string, required) - Address State/Province
++ country: Brazil (string, required) - Address Country
++ zip_code: 14801180 (string) - Address Zip Code
++ public_area_desc: Av Barroso (string, required) - Address Public Area Description
++ number: 7856 (string, required) - Address number
+
+
+# Users [/users]
+User collection
+
++ Attributes (User)
+
+
+## List User collection [GET /users/{?email,cpf,name}]
+
++ Parameters
+    + email: johndoe@example.com (string, optional) - User email
+    + cpf: 37688765098 (string, optional) - User cpf
+    + name: Charles (string, optional) - User name
+
++ Response 200
+    + Attributes
+        +  result (array[User])
+
+## Get User [GET /users/{user_id}]
+
++ Parameters
+    + user_id: johndoe@example.com (string, optional) - User id
+
++ Response 200
+    + Attributes
+        +  result (User)
+
++ Response 404
+
+## Create User [POST /users/]
+
++ Request Create User (application/json)
+    + Attributes
+        +  user (User)
+
++ Response 201
+    + Attributes
+        +  result (User)
+
++ Response 400
+
++ Response 422
+
+## Delete User [DELETE /users/{user_id}]
+
++ Parameters
+    + user_id: 123 (string, required) - User id
+
++ Response 204
+
++ Response 404
+
+## Update User [PUT /users/{user_id}]
+
++ Parameters
+    + user_id: 123 (string, required) - User id
+
++ Response 204
+
++ Response 404
+
