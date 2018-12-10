@@ -2,6 +2,8 @@ import pytest
 
 from api import create_app
 from pymongo import MongoClient
+from api.models.address import Address
+from api.models.user import User
 
 
 @pytest.fixture
@@ -30,3 +32,41 @@ def teardown_database(app):
 
     connection = MongoClient(db_uri)
     connection.drop_database(db_name)
+
+
+class StubFactory:
+    @staticmethod
+    def create_user(data=None):
+        address_data = {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        }
+        user_data = {
+            "first_name": "John",
+            "last_name": "Doe",
+            "cpf": "35411126744",
+            "birthdate": "2010-10-28",
+            "telephones": ["551622338877", "551633448977"],
+            "address": address_data,
+        }
+        user_data.update(**data or {})
+
+        return User(**user_data).save().reload()
+
+    @staticmethod
+    def create_address(data=None):
+        address_data = {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        }
+        address_data.update(**data or {})
+
+        return Address(**address_data)
