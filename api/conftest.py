@@ -34,30 +34,22 @@ def teardown_database(app):
 
 
 class StubFactory:
-    @staticmethod
-    def create_user(data=None):
-        address_data = {
-            "city": "São Carlos",
-            "state_province": "SP",
-            "country": "Brazil",
-            "zip_code": "14801180",
-            "public_area_desc": "Av Lapena",
-            "number": "877",
-        }
+    @classmethod
+    def create_user(cls, data=None):
         user_data = {
             "first_name": "John",
             "last_name": "Doe",
             "cpf": "35411126744",
             "birthdate": "2010-10-28",
             "telephones": ["551622338877", "551633448977"],
-            "address": address_data,
+            "address": cls.create_address(),
         }
         user_data.update(**data or {})
 
         return User(**user_data).save().reload()
 
-    @staticmethod
-    def create_address(data=None):
+    @classmethod
+    def create_address(cls, data=None):
         address_data = {
             "city": "São Carlos",
             "state_province": "SP",

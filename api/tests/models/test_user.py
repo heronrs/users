@@ -1,18 +1,12 @@
 import pytest
 from mongoengine.errors import ValidationError
 
+from api.conftest import StubFactory
 from api.models import User
 
 
 def test_can_create_user(client):
-    address = {
-        "city": "São Carlos",
-        "state_province": "SP",
-        "country": "Brazil",
-        "zip_code": "14801180",
-        "public_area_desc": "Av Lapena",
-        "number": "877",
-    }
+    address = StubFactory.create_address()
 
     user_data = {
         "first_name": "John",
@@ -27,19 +21,12 @@ def test_can_create_user(client):
     user = User(**user_data)
     user.save()
 
-    assert user_data["first_name"] == User.objects.first().to_mongo()["first_name"]
-    assert user_data["emails"] == User.objects.first().to_mongo()["emails"]
+    assert user_data["first_name"] == User.objects.first().first_name
+    assert user_data["emails"] == User.objects.first().emails
 
 
 def test_can_create_user_without_emails(client):
-    address = {
-        "city": "São Carlos",
-        "state_province": "SP",
-        "country": "Brazil",
-        "zip_code": "14801180",
-        "public_area_desc": "Av Lapena",
-        "number": "877",
-    }
+    address = StubFactory.create_address()
 
     user_data = {
         "first_name": "John",
@@ -53,8 +40,8 @@ def test_can_create_user_without_emails(client):
     user = User(**user_data)
     user.save()
 
-    assert user_data["first_name"] == User.objects.first().to_mongo()["first_name"]
-    assert user_data["telephones"] == User.objects.first().to_mongo()["telephones"]
+    assert user_data["last_name"] == User.objects.first().last_name
+    assert user_data["telephones"] == User.objects.first().telephones
 
 
 def test_cannot_create_user_required_fields(client):
