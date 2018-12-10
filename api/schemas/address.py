@@ -1,4 +1,4 @@
-from api.models.address import Address
+from api.models import Address
 from marshmallow_mongoengine import ModelSchema
 
 

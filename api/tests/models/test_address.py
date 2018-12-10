@@ -1,7 +1,9 @@
-from api.models.address import Address
 import json
+
 import pytest
 from mongoengine.errors import ValidationError
+
+from api.models import Address
 
 
 def test_can_create_address(client):
@@ -44,4 +46,3 @@ def test_cannot_create_addres_required_fields(client):
         match="['city', 'state_province', 'country', 'public_area_desc', 'number']",
     ):
         address.validate()
-

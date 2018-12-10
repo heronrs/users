@@ -1,7 +1,7 @@
 import pytest
 from mongoengine.errors import ValidationError
 
-from api.models.user import User
+from api.models import User
 
 
 def test_can_create_user(client):

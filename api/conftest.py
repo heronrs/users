@@ -2,8 +2,7 @@ import pytest
 
 from api import create_app
 from pymongo import MongoClient
-from api.models.address import Address
-from api.models.user import User
+from api.models import Address, User
 
 
 @pytest.fixture
