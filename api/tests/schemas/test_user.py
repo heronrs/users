@@ -5,7 +5,7 @@ from api.schemas import UserSchema
 
 
 def test_can_serialize_user(app):
-    user = StubFactory.create_user()
+    user = StubFactory.create_user(save_db=True)
     schema = UserSchema()
 
     result = schema.dump(user)

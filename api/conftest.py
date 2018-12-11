@@ -1,5 +1,5 @@
 import pytest
-
+from datetime import datetime
 from api import create_app
 from pymongo import MongoClient
 from api.models import Address, User
@@ -35,18 +35,21 @@ def teardown_database(app):
 
 class StubFactory:
     @classmethod
-    def create_user(cls, data=None):
+    def create_user(cls, data=None, save_db=True):
         user_data = {
             "first_name": "John",
             "last_name": "Doe",
             "cpf": "35411126744",
-            "birthdate": "2010-10-28",
+            "birthdate": datetime.now().date(),
             "telephones": ["551622338877", "551633448977"],
             "address": cls.create_address(),
         }
         user_data.update(**data or {})
 
-        return User(**user_data).save().reload()
+        if save_db:
+            return User(**user_data).save().reload()
+
+        return User(**user_data)
 
     @classmethod
     def create_address(cls, data=None):
