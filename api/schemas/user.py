@@ -1,6 +1,7 @@
-from api.models import User
 from marshmallow import fields
 from marshmallow_mongoengine import ModelSchema
+
+from api.models import User
 
 
 class UserSchema(ModelSchema):

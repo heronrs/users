@@ -8,9 +8,8 @@ from mongoengine import (
     StringField,
 )
 
+from api.models import Address
 from api.utils import CustomBaseQuerySet
-
-from .address import Address
 
 
 class User(Document):
