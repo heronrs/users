@@ -1,17 +1,32 @@
-from flask import Blueprint, jsonify, current_app, request
+from flask import Blueprint, current_app, jsonify, request
+from webargs import fields
+from webargs.flaskparser import use_args, use_kwargs
 
 from api.models import User
-from api.schemas import UserSchema
+from api.schemas import UserSchema, make_user_schema
 from api.utils import APIException
 
 view = Blueprint("users", __name__, url_prefix="/api/users")
 
 
 @view.route("/", methods=["GET"])
-def list():
-    users = User.objects.all()
+@use_args(
+    {
+        "page": fields.Int(missing=1),
+        "per_page": fields.Int(missing=10),
+        "first_name": fields.String(attribute="first_name__iexact"),
+        "last_name": fields.String(attribute="last_name__iexact"),
+        "cpf": fields.String(),
+    },
+    locations=("query",),
+)
+def list(args):
+    page, per_page = args.pop("page"), args.pop("per_page")
+    paginator = User.objects.filter(**args).paginate(page=page, per_page=per_page)
+
     schema = UserSchema(many=True)
-    result = schema.dump(users)
+    result = schema.dump(paginator.items)
+
     if not result.errors:
         return jsonify({"result": result.data}), 200
 

@@ -8,7 +8,7 @@ from api.models import User
 from api.schemas import UserSchema
 
 
-def test_list_user(client):
+def test_list_users(client):
     StubFactory.create_user()
     StubFactory.create_user(
         {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "3768851100"}
@@ -23,6 +23,54 @@ def test_list_user(client):
     User.objects.get(**user_2).id == user_2["id"]
 
     assert len(resp.json["result"]) == 2
+    assert resp.status_code == 200
+
+
+def test_list_filtered_user(client):
+    user = StubFactory.create_user(
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "3768851100"}
+    )
+
+    resp = client.get(url_for("users.list"), query_string={"first_name": "Jane"})
+
+    User.objects.get(id=user.id).first_name == "jane"
+
+    assert len(resp.json["result"]) == 1
+    assert resp.status_code == 200
+
+    resp = client.get(url_for("users.list"), query_string={"cpf": "3768851100"})
+
+    User.objects.get(id=user.id).cpf == "3768851100"
+
+    assert len(resp.json["result"]) == 1
+    assert resp.status_code == 200
+
+    resp = client.get(url_for("users.list"), query_string={"last_name": "Dunninghan"})
+
+    User.objects.get(id=user.id).last_name == "dunninGHan"
+
+    assert len(resp.json["result"]) == 1
+    assert resp.status_code == 200
+
+    resp = client.get(
+        url_for("users.list"),
+        query_string={
+            "cpf": "3768851100",
+            "first_name": "Jane",
+            "last_name": "Dunninghan",
+        },
+    )
+
+    User.objects.get(id=user.id).last_name == "Dunninghan"
+    User.objects.get(id=user.id).first_name == "Jane"
+    User.objects.get(id=user.id).cpf == "3768851100"
+
+    assert len(resp.json["result"]) == 1
+    assert resp.status_code == 200
+
+    resp = client.get(url_for("users.list"), query_string={"last_name": "Not Found"})
+
+    assert len(resp.json["result"]) == 0
     assert resp.status_code == 200
 
 
