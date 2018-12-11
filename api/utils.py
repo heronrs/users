@@ -1,3 +1,18 @@
+from flask_mongoengine import BaseQuerySet
+from mongoengine.errors import DoesNotExist
+
+
+class CustomBaseQuerySet(BaseQuerySet):
+    def get_or_raise(self, *args, **kwargs):
+        try:
+            return self.get(*args, **kwargs)
+
+        except DoesNotExist:
+            raise APIException(
+                "Resource not found %s %s" % (args, kwargs), status_code=404
+            )
+
+
 class APIException(Exception):
     status_code = 400
 
@@ -17,7 +32,10 @@ class APIException(Exception):
 LOGGING = {
     "version": 1,
     "formatters": {
-        "default": {"format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"}
+        "default": {
+            "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            "class": "pythonjsonlogger.jsonlogger.JsonFormatter",
+        }
     },
     "handlers": {
         "wsgi": {
@@ -28,4 +46,3 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["wsgi"]},
 }
-

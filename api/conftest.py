@@ -1,7 +1,9 @@
-import pytest
 from datetime import datetime
-from api import create_app
+
+import pytest
 from pymongo import MongoClient
+
+from api import create_app
 from api.models import Address, User
 
 
