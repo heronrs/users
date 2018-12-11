@@ -26,7 +26,7 @@ def test_can_deserialize_user(app):
     user_data = {
         "first_name": "John",
         "last_name": "Doe",
-        "cpf": "35411126744",
+        "cpf": "03709557062",
         "birthdate": "2010-10-28",
         "telephones": ["551622338877", "551633448977"],
         "address": address_data,

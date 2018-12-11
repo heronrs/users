@@ -41,7 +41,7 @@ class StubFactory:
         user_data = {
             "first_name": "John",
             "last_name": "Doe",
-            "cpf": "35411126744",
+            "cpf": "03709557062",
             "birthdate": datetime.now().date(),
             "telephones": ["551622338877", "551633448977"],
             "address": cls.create_address(),

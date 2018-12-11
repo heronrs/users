@@ -11,7 +11,7 @@ from api.schemas import UserSchema
 def test_list_users(client):
     StubFactory.create_user()
     StubFactory.create_user(
-        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "3768851100"}
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
     )
 
     resp = client.get(url_for("users.list"))
@@ -28,7 +28,7 @@ def test_list_users(client):
 
 def test_list_filtered_user(client):
     user = StubFactory.create_user(
-        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "3768851100"}
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
     )
 
     resp = client.get(url_for("users.list"), query_string={"first_name": "Jane"})
@@ -38,9 +38,9 @@ def test_list_filtered_user(client):
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
-    resp = client.get(url_for("users.list"), query_string={"cpf": "3768851100"})
+    resp = client.get(url_for("users.list"), query_string={"cpf": "52203351039"})
 
-    User.objects.get(id=user.id).cpf == "3768851100"
+    User.objects.get(id=user.id).cpf == "52203351039"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
@@ -55,7 +55,7 @@ def test_list_filtered_user(client):
     resp = client.get(
         url_for("users.list"),
         query_string={
-            "cpf": "3768851100",
+            "cpf": "52203351039",
             "first_name": "Jane",
             "last_name": "Dunninghan",
         },
@@ -63,7 +63,7 @@ def test_list_filtered_user(client):
 
     User.objects.get(id=user.id).last_name == "Dunninghan"
     User.objects.get(id=user.id).first_name == "Jane"
-    User.objects.get(id=user.id).cpf == "3768851100"
+    User.objects.get(id=user.id).cpf == "52203351039"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
@@ -75,7 +75,7 @@ def test_list_filtered_user(client):
 
 
 def test_create_user(client):
-    user = StubFactory.create_user(save_db=False)
+    user = StubFactory.create_user({"cpf": "37600750880"}, save_db=False)
     schema = UserSchema()
     result = schema.dumps(user)
 
@@ -89,9 +89,9 @@ def test_create_user(client):
 
 
 def test_create_user_bulk(client):
-    user1 = StubFactory.create_user(save_db=False)
+    user1 = StubFactory.create_user({"cpf": "71188941097"}, save_db=False)
     user2 = StubFactory.create_user(
-        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "3768851100"},
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "37600750880"},
         save_db=False,
     )
 
