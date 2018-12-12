@@ -1,3 +1,3 @@
 #!/bin/sh
 
-flask run -h 0.0.0.0 -p 8000
+/usr/local/bin/gunicorn --reload -b 0.0.0.0:8000 "api:create_app()"
