@@ -90,7 +90,7 @@ def update(user_id):
     user = User.objects.get_or_raise(id=user_id)
 
     schema = UserSchema()
-    errors = schema.validate(request.json, partial=True)
+    errors = schema.validate(request.json, partial=request.method == "PATCH")
 
     if errors:
         raise APIException(
