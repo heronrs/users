@@ -15,21 +15,20 @@ def test_can_serialize_user(app):
 
 
 def test_can_deserialize_user(app):
-    address_data = {
-        "city": "São Carlos",
-        "state_province": "SP",
-        "country": "Brazil",
-        "zip_code": "14801180",
-        "public_area_desc": "Av Lapena",
-        "number": "877",
-    }
     user_data = {
         "first_name": "John",
         "last_name": "Doe",
         "cpf": "03709557062",
         "birthdate": "28/10/2010",
         "telephones": ["551622338877", "551633448977"],
-        "address": address_data,
+        "address": {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        },
     }
 
     schema = UserSchema()
@@ -39,6 +38,62 @@ def test_can_deserialize_user(app):
 
     assert result.errors == {}
     user.save()
+
+
+def test_cannot_deserialize_user_invalid_birthdate(app):
+    user_data = {
+        "first_name": "John",
+        "last_name": "Doe",
+        "cpf": "03709557062",
+        "birthdate": "28/21245",
+        "telephones": ["551622338877", "551633448977"],
+        "address": {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        },
+    }
+
+    schema = UserSchema()
+    result = schema.load(user_data)
+
+    assert result.errors == {"birthdate": ["Not a valid date."]}
+
+
+def test_cannot_deserialize_user_invalid_cpf(app):
+    user_data = {
+        "first_name": "John",
+        "last_name": "Doe",
+        "cpf": "10101010101",
+        "birthdate": "28/10/2010",
+        "telephones": ["551622338877", "551633448977"],
+        "address": {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        },
+    }
+
+    schema = UserSchema()
+    result = schema.load(user_data)
+
+    assert result.errors == {"cpf": ["invalid value"]}
+
+    user_data.update({"cpf": "109875"})
+    result = schema.load(user_data)
+
+    assert result.errors == {"cpf": ["invalid value"]}
+
+    user_data.update({"cpf": "99999999999"})
+    result = schema.load(user_data)
+
+    assert result.errors == {"cpf": ["invalid value"]}
 
 
 def test_cannot_deserialize_user_required_fields(app):
