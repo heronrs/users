@@ -6,3 +6,4 @@ class BaseSettings:
     FLASK_APP = os.environ["FLASK_APP"]
     FLASK_DEBUG = os.environ["FLASK_DEBUG"]
     MONGODB_SETTINGS = {"host": os.environ["MONGODB_URI"]}
+    SECRET_KEY = os.environ["SECRET_KEY"]
