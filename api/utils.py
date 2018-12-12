@@ -1,5 +1,8 @@
+from flask import jsonify, url_for
 from flask_mongoengine import BaseQuerySet
 from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
+
+from api.exceptions import APIException
 
 
 class CustomBaseQuerySet(BaseQuerySet):
@@ -17,40 +20,36 @@ class CustomBaseQuerySet(BaseQuerySet):
             )
 
 
-class APIException(Exception):
-    status_code = 400
+def paginated_response(paginator, view_name, payload, filters):
+    payload["count"] = paginator.total
 
-    def __init__(self, message, status_code=None, payload=None):
-        super().__init__(self)
-        self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
+    if paginator.has_next:
+        payload["next"] = url_for(
+            view_name, page=paginator.next_num, per_page=paginator.per_page, **filters
+        )
 
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv["message"] = self.message
-        return rv
+    if paginator.has_prev:
+        payload["previous"] = url_for(
+            view_name, page=paginator.prev_num, per_page=paginator.per_page, **filters
+        )
+
+    return jsonify(payload), 200
 
 
-LOGGING = {
-    "version": 1,
-    "formatters": {
-        "default": {
-            "format": "[%(asctime)s] %(levelname)s in %(name)s: %(message)s",
-            "class": "pythonjsonlogger.jsonlogger.JsonFormatter",
-        }
-    },
-    "handlers": {
-        "wsgi": {
-            "class": "logging.StreamHandler",
-            "stream": "ext://sys.stdout",
-            "formatter": "default",
-        }
-    },
-    "loggers": {
-        "flask": {"handlers": ["wsgi"], "level": "INFO"},
-        "gunicorn.error": {"handlers": ["wsgi"], "level": "INFO"},
-        "gunicorn.access": {"handlers": ["wsgi"], "level": "INFO"},
-    },
-}
+def clean_keys(filters, remove_text=""):
+    """Remove arbitrary text from dictionary keys
+
+        Example:
+            dict = {'name__icontains': 'John'}
+            clean_keys(data, remove_text='__icontains')
+
+            {'name': 'John'}
+    """
+
+    cleaned_filters = {}
+
+    for k, v in filters.items():
+        cleaned_filters[k] = v
+        cleaned_filters[k.replace(remove_text, "")] = cleaned_filters.pop(k)
+
+    return cleaned_filters

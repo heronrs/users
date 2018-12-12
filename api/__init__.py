@@ -3,19 +3,18 @@ from logging.config import dictConfig
 from flask import Flask, jsonify, cli
 from flask_mongoengine import MongoEngine
 
-from .utils import LOGGING, APIException
+from .exceptions import APIException
 from .blueprints import user
 
 
 def create_app():
+    cli.load_dotenv()
+
+    from .settings import BaseSettings, LOGGING
+
     dictConfig(LOGGING)
 
     app = Flask(__name__)
-
-    cli.load_dotenv()
-
-    from .settings import BaseSettings
-
     app.config.from_object(BaseSettings)
 
     configure_blueprints(app)
