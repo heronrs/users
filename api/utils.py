@@ -37,16 +37,20 @@ LOGGING = {
     "version": 1,
     "formatters": {
         "default": {
-            "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            "format": "[%(asctime)s] %(levelname)s in %(name)s: %(message)s",
             "class": "pythonjsonlogger.jsonlogger.JsonFormatter",
         }
     },
     "handlers": {
         "wsgi": {
             "class": "logging.StreamHandler",
-            "stream": "ext://flask.logging.wsgi_errors_stream",
+            "stream": "ext://sys.stdout",
             "formatter": "default",
         }
     },
-    "root": {"level": "INFO", "handlers": ["wsgi"]},
+    "loggers": {
+        "flask": {"handlers": ["wsgi"], "level": "INFO"},
+        "gunicorn.error": {"handlers": ["wsgi"], "level": "INFO"},
+        "gunicorn.access": {"handlers": ["wsgi"], "level": "INFO"},
+    },
 }
