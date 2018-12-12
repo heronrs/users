@@ -6,17 +6,30 @@ A Restful API made as parte of Mira Educacao Backend Challenge
 
 # Data Structures
 
-## User (object)
-+ id: 1 (string, fixed) - Unique identifier
+## User Response (object)
++ id: 5c1044f6cf88d14b4778f628 (string, fixed) - Unique identifier
 + name: John Doe (string, required) - User name
-+ telephones: [5516996542233, 551133225566] (array[string], required) - User telephones
++ telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
 + emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
-+ cpf: 3756458967 (string, required) - User CPF
-+ birthdate: 10/24/2010 (string, required) - User birthdate
++ cpf: 37600750140 (string, required) - User CPF
+    Numbers only or XXX.XXX.XXX-XX
++ birthdate: 10/28/2019 (string, required) - User birthdate
+    Any valid ISO8601 date format
 + active: true (boolean)
     + Default: true
 + address (Address, required)
 
+## User Request (object)
++ name: John Doe (string, required) - User name
++ telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
++ emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
++ cpf: 37600750140 (string, required) - User CPF
+    Numbers only or XXX.XXX.XXX-XX
++ birthdate: 10/28/2019 (string, required) - User birthdate
+    Any valid ISO8601 date format
++ active: true (boolean)
+    + Default: true
++ address (Address, required)
 
 ## Address (object)
 + city: Araraquara (string, fixed) - Address city
@@ -30,40 +43,44 @@ A Restful API made as parte of Mira Educacao Backend Challenge
 # Users [/users]
 User collection
 
-+ Attributes (User)
++ Attributes (User Response)
 
 
-## List User collection [GET /users/{?email,cpf,name}]
+## List User collection [GET /users/{?first_name,last_name,cpf,page,per_page}]
 
 + Parameters
-    + email: johndoe@example.com (string, optional) - User email
+    + first_name: Carlos (string, optional) - User first name
+    + last_name: Blanka (string, optional) - User last name
     + cpf: 37688765098 (string, optional) - User cpf
-    + name: Charles (string, optional) - User name
+    + page: 1 (string, optional) - Pagination page number
+    + per_page: 1 (string, optional) - Pagination itens per page
 
 + Response 200
     + Attributes
-        +  result (array[User])
+        +  result (array[User Response])
 
 ## Get User [GET /users/{user_id}]
 
 + Parameters
-    + user_id: johndoe@example.com (string, optional) - User id
+    + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
 
 + Response 200
     + Attributes
-        +  result (User)
+        +  result (User Response)
 
 + Response 404
+    + Attributes
+        + message: Resource not found - (string)
 
 ## Create User [POST /users/]
 
 + Request Create User (application/json)
     + Attributes
-        +  user (User)
+        +  user (User Request)
 
 + Response 201
     + Attributes
-        +  result (User)
+        +  result (User Response)
 
 + Response 400
 
@@ -72,18 +89,31 @@ User collection
 ## Delete User [DELETE /users/{user_id}]
 
 + Parameters
-    + user_id: 123 (string, required) - User id
+    + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
 
 + Response 204
 
 + Response 404
+    + Attributes
+        + message: Resource not found - (string)
 
 ## Update User [PUT /users/{user_id}]
 
 + Parameters
-    + user_id: 123 (string, required) - User id
+    + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
 
 + Response 204
 
 + Response 404
 
+## Remove User [DELETE /users/{user_id}/remove]
+Logically removes a user from database
+
++ Parameters
+    + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
+
++ Response 204
+
++ Response 404
+    + Attributes
+        + message: Resource not found - (string)
