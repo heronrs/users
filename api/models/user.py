@@ -14,7 +14,10 @@ from api.utils import CustomBaseQuerySet
 
 class User(Document):
 
-    meta = {"queryset_class": CustomBaseQuerySet}
+    meta = {
+        "queryset_class": CustomBaseQuerySet,
+        "indexes": ["first_name", "last_name", "cpf"],
+    }
 
     first_name = StringField(max_length=50, required=True)
     last_name = StringField(max_length=150, required=True)
