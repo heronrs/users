@@ -4,7 +4,7 @@ from flask import Flask, jsonify, cli
 from flask_mongoengine import MongoEngine
 
 from .utils import LOGGING, APIException
-from .views.user import view as user_view
+from .blueprints import user
 
 
 def create_app():
@@ -26,7 +26,7 @@ def create_app():
 
 
 def configure_blueprints(app):
-    app.register_blueprint(user_view)
+    app.register_blueprint(user)
 
 
 def configure_extensions(app):

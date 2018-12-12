@@ -1,15 +1,15 @@
 from flask import Blueprint, current_app, jsonify, request
 from webargs import fields
-from webargs.flaskparser import use_args, use_kwargs
+from webargs.flaskparser import use_args
 
 from api.models import User
-from api.schemas import UserSchema, make_user_schema
+from api.schemas import UserSchema
 from api.utils import APIException
 
-view = Blueprint("users", __name__, url_prefix="/api/users")
+user = Blueprint("user", __name__, url_prefix="/api/users")
 
 
-@view.route("/", methods=["GET"])
+@user.route("/", methods=["GET"])
 @use_args(
     {
         "page": fields.Int(missing=1),
@@ -39,7 +39,7 @@ def list(args):
         )
 
 
-@view.route("/", methods=["POST"])
+@user.route("/", methods=["POST"])
 def create():
     many = False
 
@@ -68,7 +68,7 @@ def create():
         )
 
 
-@view.route("/<user_id>/", methods=["GET"])
+@user.route("/<user_id>/", methods=["GET"])
 def get(user_id):
     user = User.objects.get_or_raise(id=user_id)
 
@@ -78,14 +78,14 @@ def get(user_id):
     return jsonify(result.data), 200
 
 
-@view.route("/<user_id>/", methods=["DELETE"])
+@user.route("/<user_id>/", methods=["DELETE"])
 def delete(user_id):
     User.objects.get_or_raise(id=user_id).delete()
 
     return jsonify({}), 204
 
 
-@view.route("/<user_id>/", methods=["PUT", "PATCH"])
+@user.route("/<user_id>/", methods=["PUT", "PATCH"])
 def update(user_id):
     user = User.objects.get_or_raise(id=user_id)
 
@@ -103,7 +103,7 @@ def update(user_id):
     return jsonify({}), 204
 
 
-@view.route("/<user_id>/remove", methods=["POST"])
+@user.route("/<user_id>/remove", methods=["POST"])
 def remove(user_id):
     user = User.objects.get_or_raise(id=user_id)
 

@@ -14,7 +14,7 @@ def test_list_users(client):
         {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
     )
 
-    resp = client.get(url_for("users.list"))
+    resp = client.get(url_for("user.list"))
 
     user_1 = resp.json["result"][0]
     user_2 = resp.json["result"][1]
@@ -31,21 +31,21 @@ def test_list_filtered_user(client):
         {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
     )
 
-    resp = client.get(url_for("users.list"), query_string={"first_name": "Jane"})
+    resp = client.get(url_for("user.list"), query_string={"first_name": "Jane"})
 
     User.objects.get(id=user.id).first_name == "jane"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
-    resp = client.get(url_for("users.list"), query_string={"cpf": "52203351039"})
+    resp = client.get(url_for("user.list"), query_string={"cpf": "52203351039"})
 
     User.objects.get(id=user.id).cpf == "52203351039"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
-    resp = client.get(url_for("users.list"), query_string={"last_name": "Dunninghan"})
+    resp = client.get(url_for("user.list"), query_string={"last_name": "Dunninghan"})
 
     User.objects.get(id=user.id).last_name == "dunninGHan"
 
@@ -53,7 +53,7 @@ def test_list_filtered_user(client):
     assert resp.status_code == 200
 
     resp = client.get(
-        url_for("users.list"),
+        url_for("user.list"),
         query_string={
             "cpf": "52203351039",
             "first_name": "Jane",
@@ -68,7 +68,7 @@ def test_list_filtered_user(client):
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
-    resp = client.get(url_for("users.list"), query_string={"last_name": "Not Found"})
+    resp = client.get(url_for("user.list"), query_string={"last_name": "Not Found"})
 
     assert len(resp.json["result"]) == 0
     assert resp.status_code == 200
@@ -80,7 +80,7 @@ def test_create_user(client):
     result = schema.dumps(user)
 
     resp = client.post(
-        url_for("users.create"), data=result.data, content_type="application/json"
+        url_for("user.create"), data=result.data, content_type="application/json"
     )
 
     User.objects.get(**resp.json)
@@ -99,7 +99,7 @@ def test_create_user_bulk(client):
     result = schema.dumps([user1, user2])
 
     resp = client.post(
-        url_for("users.create"), data=result.data, content_type="application/json"
+        url_for("user.create"), data=result.data, content_type="application/json"
     )
 
     user1 = resp.json[0]
@@ -113,7 +113,7 @@ def test_create_user_bulk(client):
 
 def test_get_user(client):
     user = StubFactory.create_user(save_db=True)
-    resp = client.get(url_for("users.get", user_id=user.id))
+    resp = client.get(url_for("user.get", user_id=user.id))
 
     assert User.objects.get(**resp.json).id == user.id
     assert resp.status_code == 200
@@ -121,7 +121,7 @@ def test_get_user(client):
 
 def test_get_user_not_found(client):
     _id = str(ObjectId())
-    resp = client.get(url_for("users.get", user_id=_id))
+    resp = client.get(url_for("user.get", user_id=_id))
 
     assert resp.status_code == 404
     assert resp.json == {"message": "Resource not found () {'id': '%s'}" % _id}
@@ -129,7 +129,7 @@ def test_get_user_not_found(client):
 
 def test_delete_user(client):
     user = StubFactory.create_user(save_db=True)
-    resp = client.delete(url_for("users.delete", user_id=user.id))
+    resp = client.delete(url_for("user.delete", user_id=user.id))
 
     assert len(User.objects.filter(id=user.id)) == 0
     assert resp.status_code == 204
@@ -140,7 +140,7 @@ def test_update_user(client):
     user_data = {"first_name": "Tony", "last_name": "Soprano"}
 
     resp = client.patch(
-        url_for("users.update", user_id=user.id),
+        url_for("user.update", user_id=user.id),
         data=json.dumps(user_data),
         content_type="application/json",
     )
@@ -153,7 +153,7 @@ def test_remove_user(client):
     user = StubFactory.create_user(save_db=True)
     assert User.objects.get(id=user.id).active is True
 
-    resp = client.post(url_for("users.remove", user_id=user.id))
+    resp = client.post(url_for("user.remove", user_id=user.id))
 
     assert User.objects.get(id=user.id).active is False
     assert resp.status_code == 201
