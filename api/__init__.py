@@ -18,15 +18,25 @@ def create_app():
 
     app.config.from_object(BaseSettings)
 
+    configure_blueprints(app)
+    configure_extensions(app)
+    configure_error_handlers(app)
+
+    return app
+
+
+def configure_blueprints(app):
     app.register_blueprint(user_view)
 
+
+def configure_extensions(app):
+    db = MongoEngine()
+    db.init_app(app)
+
+
+def configure_error_handlers(app):
     @app.errorhandler(APIException)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
-
-    db = MongoEngine()
-    db.init_app(app)
-
-    return app

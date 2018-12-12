@@ -1,5 +1,5 @@
 from flask_mongoengine import BaseQuerySet
-from mongoengine.errors import DoesNotExist
+from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
 
 
 class CustomBaseQuerySet(BaseQuerySet):
@@ -10,6 +10,10 @@ class CustomBaseQuerySet(BaseQuerySet):
         except DoesNotExist:
             raise APIException(
                 "Resource not found %s %s" % (args, kwargs), status_code=404
+            )
+        except MultipleObjectsReturned:
+            raise APIException(
+                "Multiple resources found %s %s" % (args, kwargs), status_code=404
             )
 
 
