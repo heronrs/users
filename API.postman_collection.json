@@ -1,0 +1,188 @@
+{
+	"info": {
+		"name": "Miraed Challenge API",
+		"_postman_id": "Miraed Challenge API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/docs/index.html"
+	},
+	"item": [
+		{
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "List User collection",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/",
+									"query": [
+										{
+											"key": "cpf",
+											"value": "37688765098",
+											"description": "User cpf"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Pagination page number"
+										},
+										{
+											"key": "per_page",
+											"value": "1",
+											"description": "Pagination itens per page"
+										},
+										{
+											"key": "first_name",
+											"value": "Carlos",
+											"description": "User first name"
+										},
+										{
+											"key": "last_name",
+											"value": "Blanka",
+											"description": "User last name"
+										}
+									]
+								},
+								"method": "GET",
+								"body": {}
+							}
+						},
+						{
+							"name": "Get User",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/:user_id/",
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "5c1044f6cf88d14b4778f628",
+											"description": "User id"
+										}
+									]
+								},
+								"method": "GET",
+								"body": {}
+							}
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"telephones\": [\n      \"5516996354040\",\n      \"551133327988\"\n    ],\n    \"emails\": [\n      \"johndoe@example.com\",\n      \"johndoe2@other.com\"\n    ],\n    \"cpf\": \"02236686056\",\n    \"birthdate\": \"10/28/2019\",\n    \"active\": true,\n    \"address\": {\n      \"city\": \"Araraquara\",\n      \"state_province\": \"São Paulo\",\n      \"country\": \"Brazil\",\n      \"zip_code\": \"14801180\",\n      \"public_area_desc\": \"Av Barroso\",\n      \"number\": \"7856\"\n    }\n  }\n}"
+								}
+							}
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/:user_id/",
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "5c1044f6cf88d14b4778f628",
+											"description": "User id"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"telephones\": [\n      \"5516996354040\",\n      \"551133327988\"\n    ],\n    \"emails\": [\n      \"johndoe@example.com\",\n      \"johndoe2@other.com\"\n    ],\n    \"cpf\": \"02236686056\",\n    \"birthdate\": \"10/28/2019\",\n    \"active\": true,\n    \"address\": {\n      \"city\": \"Araraquara\",\n      \"state_province\": \"São Paulo\",\n      \"country\": \"Brazil\",\n      \"zip_code\": \"14801180\",\n      \"public_area_desc\": \"Av Barroso\",\n      \"number\": \"7856\"\n    }\n  }\n}"
+								}
+							}
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/:user_id/",
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "5c1044f6cf88d14b4778f628",
+											"description": "User id"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"telephones\": [\n      \"5516996354040\",\n      \"551133327988\"\n    ],\n    \"emails\": [\n      \"johndoe@example.com\",\n      \"johndoe2@other.com\"\n    ],\n    \"cpf\": \"02236686056\",\n    \"birthdate\": \"10/28/2019\",\n    \"active\": true,\n    \"address\": {\n      \"city\": \"Araraquara\",\n      \"state_province\": \"São Paulo\",\n      \"country\": \"Brazil\",\n      \"zip_code\": \"14801180\",\n      \"public_area_desc\": \"Av Barroso\",\n      \"number\": \"7856\"\n    }\n  }\n}"
+								}
+							}
+						},
+						{
+							"name": "Remove User",
+							"request": {
+								"url": {
+									"protocol": "https",
+									"host": "miraed-challenge.herokuapp.com",
+									"path": "/api/v1/users/:user_id/remove",
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "5c1044f6cf88d14b4778f628",
+											"description": "User id"
+										}
+									]
+								},
+								"method": "POST",
+								"body": {}
+							}
+						}
+					],
+					"request": {
+						"url": {
+							"protocol": "",
+							"host": "",
+							"path": ""
+						},
+						"body": {}
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"protocol": "",
+					"host": "",
+					"path": ""
+				},
+				"body": {}
+			}
+		}
+	]
+}
