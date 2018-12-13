@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from bson.objectid import ObjectId
 from flask import url_for
@@ -27,28 +26,72 @@ def test_list_users(client):
     assert resp.status_code == 200
 
 
+def test_list_users_pagination(client):
+    StubFactory.create_user()
+    StubFactory.create_user(
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
+    )
+    StubFactory.create_user(
+        {"first_name": "Nemo", "last_name": "Captain", "cpf": "61755397020"}
+    )
+
+    resp = client.get(url_for("user.list"), query_string={"page": 1, "per_page": 1})
+
+    assert resp.json["count"] == 3
+    assert resp.json["next"] == url_for("user.list", page=2, per_page=1)
+    assert resp.json.get("previous") is None
+    assert len(resp.json["result"]) == 1
+    assert resp.status_code == 200
+
+    resp = client.get(url_for("user.list"), query_string={"page": 2, "per_page": 1})
+
+    assert resp.json["next"] == url_for("user.list", page=3, per_page=1)
+    assert resp.json["previous"] == url_for("user.list", page=1, per_page=1)
+
+
+def test_list_users_pagination_filtered(client):
+    StubFactory.create_user(
+        {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
+    )
+    StubFactory.create_user(
+        {"first_name": "Jane", "last_name": "Captain", "cpf": "61755397020"}
+    )
+
+    resp = client.get(
+        url_for("user.list"),
+        query_string={"page": 2, "per_page": 1, "first_name": "Jane"},
+    )
+
+    assert resp.json.get("next") is None
+    assert resp.json["previous"] == url_for(
+        "user.list", page=1, per_page=1, first_name="Jane"
+    )
+    assert resp.status_code == 200
+    assert len(resp.json["result"]) == 1
+
+
 def test_list_filtered_user(client):
     user = StubFactory.create_user(
         {"first_name": "Jane", "last_name": "Dunninghan", "cpf": "52203351039"}
     )
 
-    resp = client.get(url_for("user.list"), query_string={"first_name": "Jane"})
+    resp = client.get(url_for("user.list"), query_string={"first_name": "JaNe"})
 
-    User.objects.get(id=user.id).first_name == "jane"
+    assert User.objects.get(id=user.id).first_name == "Jane"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
     resp = client.get(url_for("user.list"), query_string={"cpf": "52203351039"})
 
-    User.objects.get(id=user.id).cpf == "52203351039"
+    assert User.objects.get(id=user.id).cpf == "52203351039"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
 
-    resp = client.get(url_for("user.list"), query_string={"last_name": "Dunninghan"})
+    resp = client.get(url_for("user.list"), query_string={"last_name": "DunninGHan"})
 
-    User.objects.get(id=user.id).last_name == "dunninGHan"
+    assert User.objects.get(id=user.id).last_name == "Dunninghan"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200
@@ -62,9 +105,10 @@ def test_list_filtered_user(client):
         },
     )
 
-    User.objects.get(id=user.id).last_name == "Dunninghan"
-    User.objects.get(id=user.id).first_name == "Jane"
-    User.objects.get(id=user.id).cpf == "52203351039"
+    user = User.objects.get(id=user.id)
+    assert user.last_name == "Dunninghan"
+    assert user.first_name == "Jane"
+    assert user.cpf == "52203351039"
 
     assert len(resp.json["result"]) == 1
     assert resp.status_code == 200

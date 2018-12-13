@@ -4,7 +4,7 @@ from webargs.flaskparser import use_args
 
 from api.models import User
 from api.schemas import UserSchema
-from api.utils import APIException
+from api.utils import APIException, paginated_response, clean_keys
 
 user = Blueprint("user", __name__, url_prefix="/api/users")
 
@@ -23,12 +23,14 @@ user = Blueprint("user", __name__, url_prefix="/api/users")
 def list(args):
     page, per_page = args.pop("page"), args.pop("per_page")
     paginator = User.objects.filter(**args).paginate(page=page, per_page=per_page)
-
     schema = UserSchema(many=True)
     result = schema.dump(paginator.items)
 
     if not result.errors:
-        return jsonify({"result": result.data}), 200
+        payload = {"result": result.data}
+        args = clean_keys(args, remove_text="__iexact")
+
+        return paginated_response(paginator, "user.list", payload, args)
 
     else:
         current_app.logger.error(
