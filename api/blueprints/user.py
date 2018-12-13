@@ -73,7 +73,7 @@ def create():
         )
 
 
-@user.route("/<user_id>/", methods=["GET"])
+@user.route("/<user_id>", methods=["GET"])
 def get(user_id):
     user = User.objects.get_or_raise(id=user_id)
 
@@ -83,7 +83,7 @@ def get(user_id):
     return jsonify(result.data), 200
 
 
-@user.route("/<user_id>/", methods=["PUT", "PATCH"])
+@user.route("/<user_id>", methods=["PUT", "PATCH"])
 def update(user_id):
     user = User.objects.get_or_raise(id=user_id)
 

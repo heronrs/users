@@ -16,6 +16,7 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(BaseSettings)
+    app.url_map.strict_slashes = False
 
     configure_blueprints(app)
     configure_extensions(app)
