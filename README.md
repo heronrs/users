@@ -16,7 +16,7 @@ Desenvolvida em python, utilizando flask e extensões
 
 - Iniciar ambiente local:
     
-        $/miraed_challenge: sudo docker-compose up -d
+        $/miraed_challenge: sudo docker-compose up --build -d
         $/miraed_challenge: firefox localhost:8000/api/v1/users
 
 - Rodar os testes:
