@@ -1,8 +1,8 @@
 FORMAT: 1A
-HOST: https://miraedchallenge.com
+HOST: https://miraed-challenge.herokuapp.com/api/v1/users/
 
 # Miraed Challenge API
-A Restful API made as parte of Mira Educacao Backend Challenge
+A Restful API made as part of Mira Educação Backend Challenge
 
 # Data Structures
 
@@ -10,9 +10,10 @@ A Restful API made as parte of Mira Educacao Backend Challenge
 + id: 5c1044f6cf88d14b4778f628 (string, fixed) - Unique identifier
 + name: John Doe (string, required) - User name
 + telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
+    Numbers only
 + emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
 + cpf: 37600750140 (string, required) - User CPF
-    Numbers only or XXX.XXX.XXX-XX
+    Numbers only
 + birthdate: 10/28/2019 (string, required) - User birthdate
     Any valid ISO8601 date format
 + active: true (boolean)
@@ -22,9 +23,10 @@ A Restful API made as parte of Mira Educacao Backend Challenge
 ## User Request (object)
 + name: John Doe (string, required) - User name
 + telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
+    Numbers onlys
 + emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
 + cpf: 37600750140 (string, required) - User CPF
-    Numbers only or XXX.XXX.XXX-XX
+    Numbers
 + birthdate: 10/28/2019 (string, required) - User birthdate
     Any valid ISO8601 date format
 + active: true (boolean)
@@ -36,6 +38,7 @@ A Restful API made as parte of Mira Educacao Backend Challenge
 + state_province: São Paulo (string, required) - Address State/Province
 + country: Brazil (string, required) - Address Country
 + zip_code: 14801180 (string) - Address Zip Code
+    Numbers only
 + public_area_desc: Av Barroso (string, required) - Address Public Area Description
 + number: 7856 (string, required) - Address number
 
