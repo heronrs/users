@@ -25,8 +25,14 @@ LOGGING = {
         }
     },
     "loggers": {
-        "flask": {"handlers": ["wsgi"], "level": "INFO"},
-        "gunicorn.error": {"handlers": ["wsgi"], "level": "INFO"},
-        "gunicorn.access": {"handlers": ["wsgi"], "level": "INFO"},
+        "flask": {"handlers": ["wsgi"], "level": os.environ.get("LOG_LEVEL", "INFO")},
+        "gunicorn.error": {
+            "handlers": ["wsgi"],
+            "level": os.environ.get("LOG_LEVEL", "INFO"),
+        },
+        "gunicorn.access": {
+            "handlers": ["wsgi"],
+            "level": os.environ.get("LOG_LEVEL", "INFO"),
+        },
     },
 }

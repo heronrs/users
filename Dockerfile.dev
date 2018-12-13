@@ -1,0 +1,11 @@
+FROM python:3.6.7-stretch
+
+COPY . /app
+
+WORKDIR /app
+
+RUN sh -c "pip install -r requirements_dev.txt"
+
+CMD ["sh", "-c", "/usr/local/bin/gunicorn --reload --access-logfile - -b 0.0.0.0:8000 'api:create_app()'"]
+
+EXPOSE 8000
