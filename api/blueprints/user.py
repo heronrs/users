@@ -6,7 +6,7 @@ from api.models import User
 from api.schemas import UserSchema
 from api.utils import APIException, paginated_response, clean_keys
 
-user = Blueprint("user", __name__, url_prefix="/api/users")
+user = Blueprint("user", __name__)
 
 
 @user.route("/", methods=["GET"])

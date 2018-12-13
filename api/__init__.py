@@ -25,7 +25,7 @@ def create_app():
 
 
 def configure_blueprints(app):
-    app.register_blueprint(user)
+    app.register_blueprint(user, url_prefix='/api/v1/users')
 
 
 def configure_extensions(app):
