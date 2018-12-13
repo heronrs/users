@@ -31,6 +31,32 @@ def test_can_deserialize_address(app):
     address.validate()
 
 
+def test_cannot_deserialize_address_invalid_zip_code(app):
+    address_data = {
+        "city": "São Carlos",
+        "state_province": "SP",
+        "country": "Brazil",
+        "zip_code": "1480^Xs",
+        "public_area_desc": "Av Lapena",
+        "number": "877",
+    }
+
+    schema = AddressSchema()
+    result = schema.load(address_data)
+
+    assert result.errors == {"zip_code": ["this field accepts numbers only"]}
+
+    address_data.update({"zip_code": "1480Xs"})
+    result = schema.load(address_data)
+
+    assert result.errors == {"zip_code": ["this field accepts numbers only"]}
+
+    address_data.update({"zip_code": "1480^~"})
+    result = schema.load(address_data)
+
+    assert result.errors == {"zip_code": ["this field accepts numbers only"]}
+
+
 def test_cannot_deserialize_address_required_fields(app):
     address_data = {}
 

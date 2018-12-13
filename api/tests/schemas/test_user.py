@@ -63,6 +63,29 @@ def test_cannot_deserialize_user_invalid_birthdate(app):
     assert result.errors == {"birthdate": ["Not a valid date."]}
 
 
+def test_cannot_deserialize_user_invalid_telephone(app):
+    user_data = {
+        "first_name": "John",
+        "last_name": "Doe",
+        "cpf": "03709557062",
+        "birthdate": "10/10/2010",
+        "telephones": ["^5516223~X~"],
+        "address": {
+            "city": "São Carlos",
+            "state_province": "SP",
+            "country": "Brazil",
+            "zip_code": "14801180",
+            "public_area_desc": "Av Lapena",
+            "number": "877",
+        },
+    }
+
+    schema = UserSchema()
+    result = schema.load(user_data)
+
+    assert result.errors == {"telephones": ["this list field accepts numbers only"]}
+
+
 def test_cannot_deserialize_user_invalid_cpf(app):
     user_data = {
         "first_name": "John",
@@ -95,6 +118,11 @@ def test_cannot_deserialize_user_invalid_cpf(app):
 
     assert result.errors == {"cpf": ["invalid value"]}
 
+    user_data.update({"cpf": "Xx99999999~"})
+    result = schema.load(user_data)
+
+    assert result.errors == {"cpf": ["this field accepts numbers only"]}
+
 
 def test_cannot_deserialize_user_required_fields(app):
     user_data = {"address": {}}
@@ -115,4 +143,5 @@ def test_cannot_deserialize_user_required_fields(app):
         "cpf": ["Missing data for required field."],
         "first_name": ["Missing data for required field."],
         "last_name": ["Missing data for required field."],
+        "telephones": ["Missing data for required field."],
     }

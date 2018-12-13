@@ -9,14 +9,29 @@ from api.models import User
 class UserSchema(ModelSchema):
     birthdate = fields.Date(required=True)
     cpf = fields.String(required=True)
+    telephones = fields.List(fields.String(max_length=15), required=True)
 
     class Meta:
         model = User
 
+    @validates("telephones")
+    def validate_telephones(self, value):
+        for tel in value:
+            non_numbers = re.findall(r"[^0-9]", tel)
+            if non_numbers:
+                raise ValidationError("this list field accepts numbers only")
+
+        return value
+
     @validates("cpf")
     def cpf_validator(self, cpf):
         # https://wiki.python.org.br/VerificadorDeCpfCnpjSimples
+        non_numbers = re.findall(r"[^0-9]", cpf)
+
         cpf = "".join(re.findall(r"\d", str(cpf)))
+
+        if non_numbers:
+            raise ValidationError("this field accepts numbers only")
 
         invalid_cpfs = []
         for x in range(10):
