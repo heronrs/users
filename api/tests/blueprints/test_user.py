@@ -172,6 +172,14 @@ def test_get_user_not_found(client):
     assert resp.json == {"message": "Resource not found () {'id': '%s'}" % _id}
 
 
+def test_get_user_invalid_id(client):
+    _id = 1234
+    resp = client.get(url_for("user.get", user_id=_id))
+
+    assert resp.status_code == 400
+    assert resp.json == {"message": "Invalid values provided () {'id': '%s'}" % _id}
+
+
 def test_delete_user(client):
     user = StubFactory.create_user(save_db=True)
     resp = client.delete(url_for("user.delete", user_id=user.id))

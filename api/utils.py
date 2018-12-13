@@ -1,6 +1,6 @@
 from flask import jsonify, url_for
 from flask_mongoengine import BaseQuerySet
-from mongoengine.errors import DoesNotExist, MultipleObjectsReturned
+from mongoengine.errors import DoesNotExist, MultipleObjectsReturned, ValidationError
 
 from api.exceptions import APIException
 
@@ -17,6 +17,10 @@ class CustomBaseQuerySet(BaseQuerySet):
         except MultipleObjectsReturned:
             raise APIException(
                 "Multiple resources found %s %s" % (args, kwargs), status_code=404
+            )
+        except ValidationError:
+            raise APIException(
+                "Invalid values provided %s %s" % (args, kwargs), status_code=400
             )
 
 
