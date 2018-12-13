@@ -13,7 +13,7 @@ A Restful API made as part of Mira Educação Backend Challenge
 + telephones: 5516996354040, 551133327988 (array[string], required) - User telephones
     Numbers only
 + emails: johndoe@example.com, johndoe2@other.com (array[string]) - User emails
-+ cpf: 37600750140 (string, required) - User CPF
++ cpf: 02236686056 (string, required) - User CPF
     Numbers only
 + birthdate: 10/28/2019 (string, required) - User birthdate
     Any valid ISO8601 date format
@@ -27,7 +27,7 @@ A Restful API made as part of Mira Educação Backend Challenge
 + telephones: 5516996354040, 551133327988 (array[string], required) - User telephones
     Numbers onlys
 + emails: johndoe@example.com, johndoe2@other.com (array[string]) - User emails
-+ cpf: 37600750140 (string, required) - User CPF
++ cpf: 02236686056 (string, required) - User CPF
     Numbers
 + birthdate: 10/28/2019 (string, required) - User birthdate
     Any valid ISO8601 date format
@@ -52,6 +52,7 @@ User collection
 
 
 ## List User collection [GET /{?first_name,last_name,cpf,page,per_page}]
+List only active users
 
 + Parameters
     + first_name: Carlos (string, optional) - User first name
@@ -64,7 +65,7 @@ User collection
     + Attributes
         +  result (array[User Response])
 
-## Get User [GET /{user_id}]
+## Get User [GET /{user_id}/]
 
 + Parameters
     + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
@@ -110,10 +111,27 @@ User collection
     + Attributes
         + message: Resource not found - (string)
 
-## Update User [PUT /{user_id}]
+## Update User [PUT /{user_id}/]
 
 + Parameters
     + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
+
++ Request (application/json)
+    + Attributes
+        + data (User Request)
+
++ Response 204
+
++ Response 404
+
+## Update User [PATCH /{user_id}/]
+
++ Parameters
+    + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
+
++ Request (application/json)
+    + Attributes
+        + data (User Request)
 
 + Response 204
 

@@ -186,43 +186,45 @@ def test_get_user_invalid_id(client):
 
 def test_update_user_patch(client):
     user = StubFactory.create_user(save_db=True)
-    user_data = {"first_name": "Tony", "last_name": "Soprano"}
+    payload = {"data": {"first_name": "Tony", "last_name": "Soprano"}}
 
     resp = client.patch(
         url_for("user.update", user_id=user.id),
-        data=json.dumps(user_data),
+        data=json.dumps(payload),
         content_type="application/json",
     )
 
-    assert User.objects.get(**user_data).id == user.id
+    assert User.objects.get(**payload["data"]).id == user.id
     assert resp.status_code == 204
 
 
 def test_update_user_put(client):
     user1 = StubFactory.create_user(save_db=True)
-    user_data = {
-        "first_name": "Tony",
-        "last_name": "Soprano",
-        "cpf": "03709557062",
-        "birthdate": "22/10/1956",
-        "telephones": ["5516996101220", "551133351122"],
-        "address": {
-            "city": "New Jersey",
-            "state_province": "New York",
-            "country": "United States",
-            "zip_code": "66888",
-            "public_area_desc": "Dover Beaches South",
-            "number": "877",
-        },
+    payload = {
+        "data": {
+            "first_name": "Tony",
+            "last_name": "Soprano",
+            "cpf": "03709557062",
+            "birthdate": "22/10/1956",
+            "telephones": ["5516996101220", "551133351122"],
+            "address": {
+                "city": "New Jersey",
+                "state_province": "New York",
+                "country": "United States",
+                "zip_code": "66888",
+                "public_area_desc": "Dover Beaches South",
+                "number": "877",
+            },
+        }
     }
 
     resp = client.put(
         url_for("user.update", user_id=user1.id),
-        data=json.dumps(user_data),
+        data=json.dumps(payload),
         content_type="application/json",
     )
 
-    assert User.objects.get(**user_data).id == user1.id
+    assert User.objects.get(**payload["data"]).id == user1.id
     assert resp.status_code == 204
 
 

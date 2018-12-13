@@ -22,7 +22,10 @@ user = Blueprint("user", __name__)
 )
 def list(args):
     page, per_page = args.pop("page"), args.pop("per_page")
-    paginator = User.objects.filter(**args).paginate(page=page, per_page=per_page)
+    paginator = User.objects.filter(**args, active=True).paginate(
+        page=page, per_page=per_page
+    )
+
     schema = UserSchema(many=True)
     result = schema.dump(paginator.items)
 
@@ -85,14 +88,14 @@ def update(user_id):
     user = User.objects.get_or_raise(id=user_id)
 
     schema = UserSchema()
-    errors = schema.validate(request.json, partial=request.method == "PATCH")
+    errors = schema.validate(request.json["data"], partial=request.method == "PATCH")
 
     if errors:
         raise APIException(
             "Error processing your request", status_code=400, payload=errors
         )
 
-    user.update(**request.json)
+    user.update(**request.json["data"])
     user.save()
 
     return jsonify({}), 204
