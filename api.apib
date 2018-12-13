@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://miraed-challenge.herokuapp.com/api/v1/users/
+HOST: https://miraed-challenge.herokuapp.com/api/v1/users
 
 # Miraed Challenge API
 A Restful API made as part of Mira Educação Backend Challenge
@@ -8,10 +8,11 @@ A Restful API made as part of Mira Educação Backend Challenge
 
 ## User Response (object)
 + id: 5c1044f6cf88d14b4778f628 (string, fixed) - Unique identifier
-+ name: John Doe (string, required) - User name
-+ telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
++ first_name: John (string, required) - User first name
++ last_name: Doe (string, required) - User last name
++ telephones: 5516996354040, 551133327988 (array[string], required) - User telephones
     Numbers only
-+ emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
++ emails: johndoe@example.com, johndoe2@other.com (array[string]) - User emails
 + cpf: 37600750140 (string, required) - User CPF
     Numbers only
 + birthdate: 10/28/2019 (string, required) - User birthdate
@@ -21,10 +22,11 @@ A Restful API made as part of Mira Educação Backend Challenge
 + address (Address, required)
 
 ## User Request (object)
-+ name: John Doe (string, required) - User name
-+ telephones: [5516996354040, 551133327988] (array[string], required) - User telephones
++ first_name: John (string, required) - User first name
++ last_name: Doe (string, required) - User last name
++ telephones: 5516996354040, 551133327988 (array[string], required) - User telephones
     Numbers onlys
-+ emails: [johndoe@example.com, johndoe2@other.com] (array[string]) - User emails
++ emails: johndoe@example.com, johndoe2@other.com (array[string]) - User emails
 + cpf: 37600750140 (string, required) - User CPF
     Numbers
 + birthdate: 10/28/2019 (string, required) - User birthdate
@@ -49,7 +51,7 @@ User collection
 + Attributes (User Response)
 
 
-## List User collection [GET /users/{?first_name,last_name,cpf,page,per_page}]
+## List User collection [GET /{?first_name,last_name,cpf,page,per_page}]
 
 + Parameters
     + first_name: Carlos (string, optional) - User first name
@@ -62,7 +64,7 @@ User collection
     + Attributes
         +  result (array[User Response])
 
-## Get User [GET /users/{user_id}]
+## Get User [GET /{user_id}]
 
 + Parameters
     + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
@@ -75,21 +77,29 @@ User collection
     + Attributes
         + message: Resource not found - (string)
 
-## Create User [POST /users/]
+## Create User [POST /]
 
 + Request Create User (application/json)
     + Attributes
-        +  user (User Request)
+        +  data (User Request)
 
 + Response 201
     + Attributes
         +  result (User Response)
 
++ Request Create User Bulk (application/json)
+    + Attributes
+        +  data array[User Request]
+
++ Response 201
+    + Attributes
+        +  result array[User Response]
+
 + Response 400
 
 + Response 422
 
-## Delete User [DELETE /users/{user_id}]
+## Delete User [DELETE /{user_id}]
 
 + Parameters
     + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
@@ -100,7 +110,7 @@ User collection
     + Attributes
         + message: Resource not found - (string)
 
-## Update User [PUT /users/{user_id}]
+## Update User [PUT /{user_id}]
 
 + Parameters
     + user_id: 5c1044f6cf88d14b4778f628 (string, required) - User id
@@ -109,7 +119,7 @@ User collection
 
 + Response 404
 
-## Remove User [DELETE /users/{user_id}/remove]
+## Remove User [POST /{user_id}/remove]
 Logically removes a user from database
 
 + Parameters

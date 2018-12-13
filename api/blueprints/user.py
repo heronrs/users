@@ -45,11 +45,11 @@ def list(args):
 def create():
     many = False
 
-    if isinstance(request.json, type([])):
+    if isinstance(request.json["data"], type([])):
         many = True
 
     schema = UserSchema(many=many)
-    result = schema.load(request.json)
+    result = schema.load(request.json["data"])
 
     if not result.errors:
         if many:
@@ -78,13 +78,6 @@ def get(user_id):
     result = schema.dump(user)
 
     return jsonify(result.data), 200
-
-
-@user.route("/<user_id>/", methods=["DELETE"])
-def delete(user_id):
-    User.objects.get_or_raise(id=user_id).delete()
-
-    return jsonify({}), 204
 
 
 @user.route("/<user_id>/", methods=["PUT", "PATCH"])

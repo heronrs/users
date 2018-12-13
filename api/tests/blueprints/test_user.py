@@ -122,10 +122,12 @@ def test_list_filtered_user(client):
 def test_create_user(client):
     user = StubFactory.create_user({"cpf": "37600750880"}, save_db=False)
     schema = UserSchema()
-    result = schema.dumps(user)
+    payload = {"data": schema.dump(user).data}
 
     resp = client.post(
-        url_for("user.create"), data=result.data, content_type="application/json"
+        url_for("user.create"),
+        data=json.dumps(payload),
+        content_type="application/json",
     )
 
     User.objects.get(**resp.json)
@@ -141,10 +143,12 @@ def test_create_user_bulk(client):
     )
 
     schema = UserSchema(many=True)
-    result = schema.dumps([user1, user2])
+    payload = {"data": schema.dump([user1, user2]).data}
 
     resp = client.post(
-        url_for("user.create"), data=result.data, content_type="application/json"
+        url_for("user.create"),
+        data=json.dumps(payload),
+        content_type="application/json",
     )
 
     user1 = resp.json[0]
@@ -178,14 +182,6 @@ def test_get_user_invalid_id(client):
 
     assert resp.status_code == 400
     assert resp.json == {"message": "Invalid values provided () {'id': '%s'}" % _id}
-
-
-def test_delete_user(client):
-    user = StubFactory.create_user(save_db=True)
-    resp = client.delete(url_for("user.delete", user_id=user.id))
-
-    assert len(User.objects.filter(id=user.id)) == 0
-    assert resp.status_code == 204
 
 
 def test_update_user_patch(client):
