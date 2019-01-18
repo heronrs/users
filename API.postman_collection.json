@@ -1,7 +1,7 @@
 {
 	"info": {
-		"name": "Miraed Challenge API",
-		"_postman_id": "Miraed Challenge API",
+		"name": "Users API",
+		"_postman_id": "Users API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/docs/index.html"
 	},
 	"item": [
@@ -15,9 +15,14 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/",
+									"host": "localhost:8000",
+									"path": "/api/users/",
 									"query": [
+										{
+											"key": "first_name",
+											"value": "Carlos",
+											"description": "User first name"
+										},
 										{
 											"key": "last_name",
 											"value": "Blanka",
@@ -37,11 +42,6 @@
 											"key": "per_page",
 											"value": "1",
 											"description": "Pagination itens per page"
-										},
-										{
-											"key": "first_name",
-											"value": "Carlos",
-											"description": "User first name"
 										}
 									]
 								},
@@ -54,8 +54,8 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/:user_id",
+									"host": "localhost:8000",
+									"path": "/api/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -73,8 +73,8 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/"
+									"host": "localhost:8000",
+									"path": "/api/users/"
 								},
 								"method": "POST",
 								"header": [
@@ -94,8 +94,8 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/:user_id",
+									"host": "localhost:8000",
+									"path": "/api/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -122,8 +122,8 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/:user_id",
+									"host": "localhost:8000",
+									"path": "/api/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -150,8 +150,8 @@
 							"request": {
 								"url": {
 									"protocol": "https",
-									"host": "miraed-challenge.herokuapp.com",
-									"path": "/api/v1/users/:user_id/remove",
+									"host": "localhost:8000",
+									"path": "/api/users/:user_id/remove",
 									"variable": [
 										{
 											"key": "user_id",
