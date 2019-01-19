@@ -16,7 +16,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/",
+									"path": "/api/v1/users/",
 									"query": [
 										{
 											"key": "first_name",
@@ -55,7 +55,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/:user_id",
+									"path": "/api/v1/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -74,7 +74,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/"
+									"path": "/api/v1/users/"
 								},
 								"method": "POST",
 								"header": [
@@ -95,7 +95,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/:user_id",
+									"path": "/api/v1/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -123,7 +123,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/:user_id",
+									"path": "/api/v1/users/:user_id",
 									"variable": [
 										{
 											"key": "user_id",
@@ -151,7 +151,7 @@
 								"url": {
 									"protocol": "https",
 									"host": "localhost:8000",
-									"path": "/api/users/:user_id/remove",
+									"path": "/api/v1/users/:user_id/remove",
 									"variable": [
 										{
 											"key": "user_id",
